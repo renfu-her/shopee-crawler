@@ -5,6 +5,6 @@
     script:
       - echo "Deploying"
     only:
-      - develop
+      - main
     tags:
       - auto-update
