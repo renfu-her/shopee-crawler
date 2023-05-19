@@ -1,0 +1,10 @@
+  stages:
+    - deploy
+  deploy:
+    stage: deploy
+    script:
+      - echo "Deploying"
+    only:
+      - develop
+    tags:
+      - auto-update
