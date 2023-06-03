@@ -5,17 +5,16 @@ from datetime import datetime
 
 headers = {
     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36 Edg/88.0.705.68",
-    "x-api-source": "pc",
+    "x-api-source": "pc"
 }
 
 limit = 100
 offset = 0
 total = 0
-shopid = "237300461"
+shopid = "6130784"
 session = requests.Session()
 fn = datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p")
 out = open(fn + '.txt', 'w', encoding='UTF-8')
-
 
 def is_chinese(uchar):
     return True if (uchar >= "\u4e00" and uchar <= "\u9fa5") else False
@@ -54,6 +53,7 @@ def getModelDetails(shopid: str, itemid: str) -> str:
         return r.json()["data"]["models"]
     else:
         raise ValueError(f"Error request with: {url}")
+    
 
 
 if __name__ == "__main__":
@@ -63,30 +63,30 @@ if __name__ == "__main__":
         r = session.get(url, headers=headers)
         if r.status_code == requests.codes.ok:
             data = r.json()
-            if offset == 0:
-                total = data["data"]["sections"][0]["total"]
-                print(f"賣場總商品數: {total}", file=out)   
+            print(data)
+            # if offset == 0:
+            #     total = data["data"]["sections"][0]["total"]
+            #     print(f"賣場總商品數: {total}", file=out)   
 
-            items = data["data"]["sections"][0]["data"]["item"]
-            total -= len(items)
+            # items = data["data"]["sections"][0]["data"]["item"]
+            # total -= len(items)
+        #     for item in items:
+        #         itemid = item["itemid"]
+        #         print(f"{'-'*100}", file=out)
+        #         print(f"{'商品    '}| {item['name']}", file=out)
+        #         print(f"{'當前折扣'}| {item['discount']}", file=out)
+                
+        #         models = getModelDetails(shopid, itemid)
+        #         for model in models:
+        #             name = string_ljust(model['name'], 30)
+        #             print(f"{'子商品  '}| {name}| 價格 {int(model['price'])/100_000:6}$ | 庫存 {model['normal_stock']:2}", file=out)
+        #             time.sleep(0.05)
+        #         time.sleep(0.2)
 
-            for item in items:
-                itemid = item["itemid"]
-                print(f"{'-'*100}", file=out)
-                print(f"{'商品    '}| {item['name']}", file=out)
-                print(f"{'當前折扣'}| {item['discount']}", file=out)
-
-                models = getModelDetails(shopid, itemid)
-                for model in models:
-                    name = string_ljust(model['name'], 30)
-                    print(f"{'子商品  '}| {name}| 價格 {int(model['price'])/100_000:6}$ | 庫存 {model['normal_stock']:2}", file=out)
-                    time.sleep(0.05)
-                time.sleep(0.2)
-
-            # 檢查剩餘商品數量
-            if total <= 0:
-                print("Done!")
-                break
-            else:
-                offset += limit
-            time.sleep(1)
+        #     # 檢查剩餘商品數量
+        #     if total <= 0:
+        #         print("Done!")
+        #         break
+        #     else:
+        #         offset += limit
+        #     time.sleep(1)
